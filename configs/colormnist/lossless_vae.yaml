@@ -1,0 +1,38 @@
+# The shared 54-dim VAE: latent space of every conditional fiber model on colorMNIST,
+# and the autoencoder component of the subject model.
+# Paper Appendix B.1.2, Table 3. Recovered from the original 'Lossless_VAE' run.
+model: fff.FiberModel
+
+batch_size: 512
+data_set: {conditional: false, name: h5mnist, root: data/cc_mnist}
+density_model:
+- {name: fff.model.Identity}
+log_det_estimator: {hutchinson_samples: 1, name: surrogate}
+loss_weights: {ae_elbo: 1, ae_lamb_reconstruction: 2000}
+lossless_ae:
+  model_spec:
+  - ch_factor: 32
+    decoder_spec:
+    - [10, 4]
+    - [8, 3, 2, 1]
+    - [6, 3, 2, 1, 1]
+    - [3, 3, 2, 1, 1]
+    encoder_spec:
+    - [3, 4, 2, 1]
+    - [6, 4, 2, 1]
+    - [8, 4, 2, 1]
+    - [10, 4, 2, 1]
+    latent_dim: 100
+    name: fff.model.ConvolutionalNeuralNetwork
+  - latent_dim: 54
+    layers_spec:
+    - [512, 512, 512]
+    - [512, 512, 512]
+    - [512, 512, 512]
+    name: fff.model.ResNet
+lr_scheduler: OneCycleLR
+max_epochs: 700
+model_checkpoint: {every_n_epochs: 25, monitor: auto, save_last: true, save_top_k: 5}
+noise: 0.01
+optimizer: {lr: 0.0002, name: Adam}
+vae: true

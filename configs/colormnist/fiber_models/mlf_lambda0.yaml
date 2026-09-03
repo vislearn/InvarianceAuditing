@@ -1,0 +1,85 @@
+# Multilevel flow (MLF) conditional fiber model on colorMNIST, fiber-loss weight lambda = 0.
+# Paper Section 4.1 / Appendix B.1.2; one marker in Figure 4 and Figure 14.
+# Recovered from the original run '100_mlf' with tools/hparams_to_config.py.
+model: fff.FiberModel
+
+batch_size: 512
+data_set: {conditional: true, name: h5mnist, root: data/cc_mnist, subject_model_path: data/cc_mnist/subject_model.ckpt,
+  subject_model_type: FiberModel}
+density_model:
+- data_dim: 54
+  inn_spec:
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  - - AllInOneBlock
+    - {}
+    - [512]
+  latent_dim: 54
+  name: fff.model.MultilevelFlow
+load_lossless_ae_path: data/cc_mnist/lossless_vae.ckpt
+load_subject_model: true
+log_det_estimator: {hutchinson_samples: 1, name: surrogate}
+loss_weights: {coarse_supervised: 10, nll: 1}
+lr_scheduler: OneCycleLR
+max_epochs: 100
+model_checkpoint: {every_n_epochs: 25, monitor: auto, save_last: true, save_top_k: 5}
+optimizer: {lr: 0.002, name: Adam}
+sm_empty_condition: true
+sm_input_transform: decolorize
+train_lossless_ae: false
+vae: true

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "invariance-auditing"
+version = "1.0.0"
+description = "Invariance auditing: efficient sampling from invariant sets for model validation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Armand Rousselot" },
+    { name = "Joran Wendebourg" },
+    { name = "Ullrich Köthe" },
+]
+
+[project.urls]
+Repository = "https://github.com/vislearn/InvarianceAuditing"
+
+[tool.setuptools.packages.find]
+include = ["fff*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Strict xfails in tests/ mark bugs that are still open; -rx prints them.
+addopts = "-rx"
+# `pytest -m "not slow"` drops test_entry_points.py: 503 tests in ~40 s instead of
+# 615 in ~345 s. Use it while iterating; run the default (everything) before a commit.
+markers = ["slow: spawns a subprocess per case (see tests/test_entry_points.py)"]

@@ -1,0 +1,39 @@
+# Latent diffusion (DIFF) conditional fiber model on colorMNIST, fiber-loss weight lambda = 0.
+# Paper Section 4.1 / Appendix B.1.2; one marker in Figure 4 and Figure 14.
+# Recovered from the original run '1000_diff' with tools/hparams_to_config.py.
+model: fff.FiberModel
+
+batch_size: 512
+data_set: {conditional: true, name: h5mnist, root: data/cc_mnist, subject_model_path: data/cc_mnist/subject_model.ckpt,
+  subject_model_type: FiberModel}
+density_model:
+- data_dim: 54
+  hidden_dim: 64
+  layers_spec:
+  - [512, 512]
+  - [512, 512]
+  - [512, 512]
+  - [512, 512]
+  - [512, 512]
+  - [512, 512]
+  name: fff.model.DiffusionModel
+  num_heads: 4
+  time_dim: 8
+  betas_max: 0.04
+  beta_schedule: linear
+eval_all: false
+fiber_loss_every: 20
+load_lossless_ae_path: data/cc_mnist/lossless_vae.ckpt
+load_subject_model: true
+log_det_estimator: {hutchinson_samples: 1, name: surrogate}
+loss_weights: {diff_mse: 1}
+lr_scheduler:
+  kwargs: {pct_start: 0.005}
+  name: OneCycleLR
+max_epochs: 1000
+model_checkpoint: {every_n_epochs: 25, monitor: auto, save_last: true, save_top_k: 5}
+optimizer: {lr: 0.001, name: Adam}
+sm_empty_condition: true
+sm_input_transform: decolorize
+train_lossless_ae: false
+vae: true

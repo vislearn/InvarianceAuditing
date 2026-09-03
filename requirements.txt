@@ -1,0 +1,31 @@
+# Core library (fff/) --------------------------------------------------------
+torch
+torchvision
+torchmetrics
+numpy
+scipy
+pandas
+h5py
+pyyaml
+tqdm
+matplotlib
+Pillow
+albumentations                      # CheXpert / MURA-style image augmentation
+diffusers                           # UNet2DModel and schedulers used by NDTM
+git+https://github.com/LarsKue/lightning-trainable.git#lightning_trainable
+git+https://github.com/vislearn/FrEIA.git#FrEIA   # coupling-flow fiber models (NF, MLF, DNF)
+flow-matching                       # flow-matching fiber model (FM)
+
+# Experiments ----------------------------------------------------------------
+scikit-learn                        # HTRU2 split/metrics, t-SNE in the notebooks
+transformers                        # BiomedCLIP / ConvNeXt / Qwen subject models
+safetensors
+accelerate                          # CheXpert diffusion training loop
+requests                            # reference-batch download for the TF FID
+
+# Optional -------------------------------------------------------------------
+# The ImageNet FIDs in Table 2 use the original TensorFlow InceptionV3 graph from
+# Heusel et al. via fff/evaluate/guided_diffusion_evaluator.py. It needs a
+# TF build matching your CUDA (TF 2.13 wants CUDA 11.8) and will not share a
+# CUDA runtime with a modern torch wheel -- install it in a separate environment.
+# tensorflow==2.13
